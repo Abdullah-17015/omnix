@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../models/chat_message.dart';
 import 'scan_provider.dart';
 
 class ChatState {
