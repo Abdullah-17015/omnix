@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "984152402925",
+    "project_id": "omnix-7caf5",
+    "storage_bucket": "omnix-7caf5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984152402925:android:f7f87ba7194d02c02ed5e4",
+        "android_client_info": {
+          "package_name": "com.omnix.omnix_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "984152402925-i9r0j95b6crbc8daqvq1v1p3joiftoie.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoLICai-NWFvgQatv_G36a1LqbsjnYxVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "984152402925-i9r0j95b6crbc8daqvq1v1p3joiftoie.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "984152402925-1vf5avehrrpdkpp912vl89767fdt9qf9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.omnix.omnixApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
