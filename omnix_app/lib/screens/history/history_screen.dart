@@ -37,7 +37,7 @@ class HistoryScreen extends ConsumerWidget {
                   Icon(
                     Icons.history,
                     size: 80,
-                    color: AppTheme.textMuted.withOpacity(0.5),
+                    color: AppTheme.textMuted.withAlpha((0.5 * 255).round()),
                   ),
                   const SizedBox(height: 16),
                   const Text(
@@ -142,7 +142,7 @@ class _ScanCard extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       _getScoreColor(ecoScore.total),
-                      _getScoreColor(ecoScore.total).withOpacity(0.7),
+                      _getScoreColor(ecoScore.total).withAlpha((0.7 * 255).round()),
                     ],
                   ),
                 ),

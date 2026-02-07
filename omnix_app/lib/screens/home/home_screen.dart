@@ -24,6 +24,95 @@ class HomeScreen extends ConsumerWidget {
       }
     });
 
+    final mainContent = Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: [
+          // Welcome message
+          if (user != null) ...[
+            Text(
+              'Welcome back!',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: AppTheme.textPrimary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              user.email ?? '',
+              style: const TextStyle(color: AppTheme.textSecondary),
+            ),
+            const SizedBox(height: 32),
+          ],
+
+          // Main scan area
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                      AppTheme.cardColor,
+                      AppTheme.cardColor.withAlpha((0.8 * 255).round()),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: scanState.isLoading
+                      ? AppTheme.primaryColor
+                      : AppTheme.textMuted.withAlpha((0.3 * 255).round()),
+                  width: 2,
+                ),
+              ),
+              child: _buildScanContent(context, ref, scanState),
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // Action buttons
+          if (!scanState.isLoading) ...[
+            Row(
+              children: [
+                Expanded(
+                  child: _ActionButton(
+                    icon: Icons.camera_alt,
+                    label: 'Camera',
+                    onPressed: () {
+                      ref.read(scanProvider.notifier).captureFromCamera();
+                    },
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _ActionButton(
+                    icon: Icons.photo_library,
+                    label: 'Gallery',
+                    onPressed: () {
+                      ref.read(scanProvider.notifier).pickFromGallery();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ] else ...[
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  ref.read(scanProvider.notifier).reset();
+                },
+                icon: const Icon(Icons.close),
+                label: const Text('Cancel'),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Omnix'),
@@ -48,6 +137,7 @@ class HomeScreen extends ConsumerWidget {
                 MaterialPageRoute(builder: (_) => const HistoryScreen()),
               );
             },
+            tooltip: 'History',
           ),
           IconButton(
             icon: const Icon(Icons.logout),
@@ -55,96 +145,46 @@ class HomeScreen extends ConsumerWidget {
               await ref.read(authNotifierProvider.notifier).signOut();
               ref.invalidate(authStateProvider);
             },
+            tooltip: 'Sign out',
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            // Welcome message
-            if (user != null) ...[
-              Text(
-                'Welcome back!',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: AppTheme.textPrimary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                user.email ?? '',
-                style: const TextStyle(color: AppTheme.textSecondary),
-              ),
-              const SizedBox(height: 32),
-            ],
-
-            // Main scan area
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppTheme.cardColor,
-                      AppTheme.cardColor.withOpacity(0.8),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: scanState.isLoading
-                        ? AppTheme.primaryColor
-                        : AppTheme.textMuted.withOpacity(0.3),
-                    width: 2,
-                  ),
-                ),
-                child: _buildScanContent(context, ref, scanState),
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Action buttons
-            if (!scanState.isLoading) ...[
-              Row(
-                children: [
-                  Expanded(
-                    child: _ActionButton(
-                      icon: Icons.camera_alt,
-                      label: 'Camera',
-                      onPressed: () {
-                        ref.read(scanProvider.notifier).captureFromCamera();
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _ActionButton(
-                      icon: Icons.photo_library,
-                      label: 'Gallery',
-                      onPressed: () {
-                        ref.read(scanProvider.notifier).pickFromGallery();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ] else ...[
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    ref.read(scanProvider.notifier).reset();
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth >= 1000;
+          if (isWide) {
+            return Row(
+              children: [
+                NavigationRail(
+                  selectedIndex: 0,
+                  labelType: NavigationRailLabelType.all,
+                  destinations: const [
+                    NavigationRailDestination(icon: Icon(Icons.home), label: Text('Home')),
+                    NavigationRailDestination(icon: Icon(Icons.history), label: Text('History')),
+                    NavigationRailDestination(icon: Icon(Icons.eco), label: Text('Results')),
+                  ],
+                  onDestinationSelected: (i) {
+                    if (i == 1) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const HistoryScreen()),
+                      );
+                    } else if (i == 2) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ResultsScreen()),
+                      );
+                    }
                   },
-                  icon: const Icon(Icons.close),
-                  label: const Text('Cancel'),
                 ),
-              ),
-            ],
-          ],
-        ),
+                const VerticalDivider(width: 1),
+                Expanded(child: mainContent),
+              ],
+            );
+          }
+
+          return mainContent;
+        },
       ),
     );
   }
@@ -178,7 +218,7 @@ class HomeScreen extends ConsumerWidget {
                 height: 80,
                 child: CircularProgressIndicator(
                   strokeWidth: 3,
-                  color: AppTheme.primaryColor.withOpacity(0.3),
+                  color: AppTheme.primaryColor.withAlpha((0.3 * 255).round()),
                 ),
               ),
               const Icon(
@@ -235,7 +275,7 @@ class HomeScreen extends ConsumerWidget {
             shape: BoxShape.circle,
             gradient: RadialGradient(
               colors: [
-                AppTheme.primaryColor.withOpacity(0.2),
+                AppTheme.primaryColor.withAlpha((0.2 * 255).round()),
                 Colors.transparent,
               ],
             ),

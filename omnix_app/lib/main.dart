@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'screens/auth/auth_screen.dart';
 import 'screens/home/home_screen.dart';
+import 'screens/landing/landing_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,11 @@ class OmnixApp extends ConsumerWidget {
       title: 'Omnix',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
-      home: const _AuthWrapper(),
+      initialRoute: '/',
+      routes: {
+        '/': (_) => const LandingPage(),
+        '/app': (_) => const _AuthWrapper(),
+      },
     );
   }
 }

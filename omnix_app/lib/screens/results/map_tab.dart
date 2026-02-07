@@ -160,7 +160,7 @@ class _MapTabState extends ConsumerState<MapTab> {
           top: 16,
           left: 16,
           child: Card(
-            color: AppTheme.cardColor.withOpacity(0.9),
+            color: AppTheme.cardColor.withAlpha((0.9 * 255).round()),
             child: Padding(
               padding: const EdgeInsets.all(12),
               child: Column(
@@ -221,7 +221,7 @@ class _PinDetailsSheet extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.2),
+                  color: AppTheme.primaryColor.withAlpha((0.2 * 255).round()),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
@@ -257,7 +257,7 @@ class _PinDetailsSheet extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: _getConfidenceColor(pin.confidence).withOpacity(0.2),
+                  color: _getConfidenceColor(pin.confidence).withAlpha((0.2 * 255).round()),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
