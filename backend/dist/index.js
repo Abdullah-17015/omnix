@@ -17,10 +17,31 @@ const voice_js_1 = __importDefault(require("./routes/voice.js"));
 dotenv_1.default.config();
 // Initialize Firebase Admin
 if (!firebase_admin_1.default.apps.length) {
-    firebase_admin_1.default.initializeApp({
-        credential: firebase_admin_1.default.credential.applicationDefault(),
-        projectId: process.env.GCP_PROJECT_ID,
-    });
+    const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+    if (serviceAccountPath && serviceAccountPath.endsWith('.json')) {
+        try {
+            // Use resolve to handle relative paths if needed, or just let certificate handle it
+            firebase_admin_1.default.initializeApp({
+                credential: firebase_admin_1.default.credential.cert(serviceAccountPath),
+                projectId: process.env.GCP_PROJECT_ID,
+            });
+            console.log('Firebase Admin initialized with service account certificate');
+        }
+        catch (error) {
+            console.error('Failed to initialize with certificate, falling back to applicationDefault:', error);
+            firebase_admin_1.default.initializeApp({
+                credential: firebase_admin_1.default.credential.applicationDefault(),
+                projectId: process.env.GCP_PROJECT_ID,
+            });
+        }
+    }
+    else {
+        firebase_admin_1.default.initializeApp({
+            credential: firebase_admin_1.default.credential.applicationDefault(),
+            projectId: process.env.GCP_PROJECT_ID,
+        });
+        console.log('Firebase Admin initialized with application default credentials');
+    }
 }
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 8080;

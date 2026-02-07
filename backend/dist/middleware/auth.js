@@ -6,6 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyFirebaseToken = verifyFirebaseToken;
 const firebase_admin_1 = __importDefault(require("firebase-admin"));
 async function verifyFirebaseToken(req, res, next) {
+    // Dev bypass: if DISABLE_AUTH is set to 'true', skip token verification
+    if (process.env.DISABLE_AUTH === 'true') {
+        console.warn('verifyFirebaseToken: DISABLE_AUTH=true, skipping token verification (development only)');
+        // allow a fake uid for request handlers
+        req.uid = 'dev-user';
+        req.email = 'dev@example.com';
+        next();
+        return;
+    }
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         res.status(401).json({ error: 'Missing or invalid authorization header' });
