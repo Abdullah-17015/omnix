@@ -7,6 +7,8 @@
 .buildlog/
 .history
 service-account.json
+.env
+.env.*
 
 
 
