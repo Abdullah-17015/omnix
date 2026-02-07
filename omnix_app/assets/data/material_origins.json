@@ -1,0 +1,77 @@
+{
+    "Lithium": [
+        {
+            "place": "Atacama Desert, Chile",
+            "lat": -23.5,
+            "lng": -68.0
+        },
+        {
+            "place": "Western Australia",
+            "lat": -30.0,
+            "lng": 121.0
+        }
+    ],
+    "Cobalt": [
+        {
+            "place": "Democratic Republic of Congo",
+            "lat": -11.0,
+            "lng": 26.0
+        }
+    ],
+    "Rare Earth Elements": [
+        {
+            "place": "Inner Mongolia, China",
+            "lat": 40.8,
+            "lng": 111.7
+        }
+    ],
+    "Copper": [
+        {
+            "place": "Chuquicamata, Chile",
+            "lat": -22.3,
+            "lng": -68.9
+        }
+    ],
+    "Aluminum": [
+        {
+            "place": "Weipa, Australia",
+            "lat": -12.7,
+            "lng": 141.9
+        }
+    ],
+    "Gold": [
+        {
+            "place": "Witwatersrand, South Africa",
+            "lat": -26.2,
+            "lng": 28.0
+        }
+    ],
+    "Tantalum": [
+        {
+            "place": "Democratic Republic of Congo",
+            "lat": -2.5,
+            "lng": 28.5
+        }
+    ],
+    "Tin": [
+        {
+            "place": "Bangka Island, Indonesia",
+            "lat": -2.5,
+            "lng": 106.0
+        }
+    ],
+    "Silicon": [
+        {
+            "place": "Xinjiang, China",
+            "lat": 43.8,
+            "lng": 87.6
+        }
+    ],
+    "Nickel": [
+        {
+            "place": "Sudbury, Ontario, Canada",
+            "lat": 46.5,
+            "lng": -81.0
+        }
+    ]
+}
