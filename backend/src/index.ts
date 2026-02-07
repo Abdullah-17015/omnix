@@ -15,10 +15,30 @@ dotenv.config();
 
 // Initialize Firebase Admin
 if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.applicationDefault(),
-        projectId: process.env.GCP_PROJECT_ID,
-    });
+    const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+
+    if (serviceAccountPath && serviceAccountPath.endsWith('.json')) {
+        try {
+            // Use resolve to handle relative paths if needed, or just let certificate handle it
+            admin.initializeApp({
+                credential: admin.credential.cert(serviceAccountPath),
+                projectId: process.env.GCP_PROJECT_ID,
+            });
+            console.log('Firebase Admin initialized with service account certificate');
+        } catch (error) {
+            console.error('Failed to initialize with certificate, falling back to applicationDefault:', error);
+            admin.initializeApp({
+                credential: admin.credential.applicationDefault(),
+                projectId: process.env.GCP_PROJECT_ID,
+            });
+        }
+    } else {
+        admin.initializeApp({
+            credential: admin.credential.applicationDefault(),
+            projectId: process.env.GCP_PROJECT_ID,
+        });
+        console.log('Firebase Admin initialized with application default credentials');
+    }
 }
 
 const app = express();
